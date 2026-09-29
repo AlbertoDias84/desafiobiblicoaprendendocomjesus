@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#1B2A4A">
+  <meta name="description" content="Um desafio divertido para aprender e testar seus conhecimentos bíblicos.">
+  <title>Desafio Bíblico</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Lora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="Desafio Bíblico, início"><span class="brand-mark">✝</span><span>Desafio Bíblico</span></a>
+    <button id="mute-button" class="icon-button" aria-label="Desativar sons" title="Som">🔊</button>
+  </header>
+  <main id="app" class="shell">
+    <section id="home-screen" class="screen hero active" aria-labelledby="main-title">
+      <div class="hero-art" aria-hidden="true"><span>✦</span><div class="scroll-icon">✝</div></div>
+      <p class="eyebrow">Conhecimento • Fé • Descoberta</p>
+      <h1 id="main-title">Desafio <em>Bíblico</em></h1>
+      <p class="intro">Explore as Escrituras, teste seus conhecimentos e descubra algo novo a cada pergunta.</p>
+      <div class="player-entry"><label for="player-name">Nome do jogador <span>(para seu recorde pessoal)</span></label><input id="player-name" class="select-control" type="text" maxlength="24" autocomplete="nickname" placeholder="Ex.: Ana" value="Jogador"></div>
+      <div class="home-actions">
+        <button class="button button-primary" data-action="quick-play">Jogar <span>→</span></button>
+        <button class="button button-secondary" data-action="setup">Escolher categoria</button>
+        <div class="button-row"><button class="button button-ghost" data-action="records">Ver recordes</button><button class="button button-ghost" data-action="how">Como jogar</button></div>
+      </div>
+      <p class="home-stat"><span>📖</span> 180 perguntas em 12 categorias</p>
+    </section>
+
+    <section id="setup-screen" class="screen panel" aria-labelledby="setup-title" hidden>
+      <button class="back-link" data-action="home">← Início</button>
+      <p class="eyebrow">Prepare seu desafio</p><h2 id="setup-title">Escolha sua jornada</h2>
+      <label class="field-label" for="category-select">Categoria</label>
+      <select id="category-select" class="select-control"></select>
+      <fieldset class="choice-field"><legend>Dificuldade</legend><div class="segmented" id="difficulty-options">
+        <label><input type="radio" name="difficulty" value="todas" checked><span>Todas</span></label><label><input type="radio" name="difficulty" value="fácil"><span>Fácil</span></label><label><input type="radio" name="difficulty" value="médio"><span>Médio</span></label><label><input type="radio" name="difficulty" value="difícil"><span>Difícil</span></label>
+      </div></fieldset>
+      <fieldset class="choice-field"><legend>Número de perguntas</legend><div class="segmented count-options">
+        <label><input type="radio" name="count" value="5"><span>5</span></label><label><input type="radio" name="count" value="10" checked><span>10</span></label><label><input type="radio" name="count" value="15"><span>15</span></label><label><input type="radio" name="count" value="20"><span>20</span></label>
+      </div></fieldset>
+      <label class="toggle-row"><span><strong>Timer de 30 segundos</strong><small>Ative um desafio contra o relógio</small></span><input id="timer-toggle" type="checkbox"><i></i></label>
+      <button class="button button-primary full" data-action="start">Começar desafio <span>→</span></button>
+      <p id="setup-note" class="muted-note" aria-live="polite"></p>
+    </section>
+
+    <section id="game-screen" class="screen game-panel" aria-labelledby="question-text" hidden>
+      <div class="game-top"><button class="back-link" data-action="quit">✕ <span class="quit-label">Sair</span></button><span id="score-display" class="score-pill">✦ 0 pts</span></div>
+      <div class="progress-meta"><span id="question-count">Pergunta 1 de 10</span><span id="timer-display" hidden>⏱ <b>30</b>s</span></div>
+      <div class="progress-track"><span id="progress-bar"></span></div>
+      <div class="question-card"><div class="question-tags"><span id="category-tag"></span><span id="difficulty-tag"></span></div><h2 id="question-text"></h2></div>
+      <div id="answers" class="answers" role="group" aria-label="Alternativas"></div>
+      <div id="feedback" class="feedback" aria-live="polite" hidden></div>
+      <button id="next-button" class="button button-primary full" data-action="next" hidden>Próxima pergunta <span>→</span></button>
+    </section>
+
+    <section id="result-screen" class="screen panel result-panel" aria-labelledby="result-title" hidden>
+      <div id="medal" class="medal">🏆</div><p class="eyebrow">Desafio concluído</p><h2 id="result-title">Sua jornada</h2>
+      <p id="result-player" class="result-player"></p><div class="result-score"><strong id="final-score">0</strong><span>pontos</span></div>
+      <p id="result-message" class="result-message"></p>
+      <div class="result-stats"><div><strong id="correct-total">0</strong><span>Acertos</span></div><div><strong id="wrong-total">0</strong><span>Erros</span></div><div><strong id="accuracy-total">0%</strong><span>Precisão</span></div><div><strong id="best-total">0</strong><span>Recorde</span></div></div>
+      <div class="result-actions"><button class="button button-primary full" data-action="replay">Jogar de novo <span>↻</span></button><button class="button button-secondary full" data-action="setup">Trocar categoria</button><button class="button button-ghost full" data-action="share">Compartilhar resultado</button><button class="button button-ghost full" data-action="home">Menu principal</button></div>
+    </section>
+
+    <section id="records-screen" class="screen panel" aria-labelledby="records-title" hidden>
+      <button class="back-link" data-action="home">← Início</button><p class="eyebrow">Seu progresso</p><h2 id="records-title">Recordes</h2>
+      <div class="record-summary"><div><strong id="lifetime-correct">0</strong><span>Acertos totais</span></div><div><strong id="lifetime-wrong">0</strong><span>Erros totais</span></div></div>
+      <div id="records-list" class="records-list"></div>
+      <button class="button button-danger full" data-action="reset">Resetar progresso</button>
+    </section>
+
+    <section id="how-screen" class="screen panel" aria-labelledby="how-title" hidden>
+      <button class="back-link" data-action="home">← Início</button><p class="eyebrow">Um guia rápido</p><h2 id="how-title">Como jogar</h2>
+      <ul class="how-list"><li><span>01</span><div><strong>Escolha seu desafio</strong><p>Selecione uma categoria, dificuldade e quantas perguntas quer responder.</p></div></li><li><span>02</span><div><strong>Marque uma alternativa</strong><p>Cada pergunta tem quatro opções. Você ganha 10, 20 ou 30 pontos conforme a dificuldade.</p></div></li><li><span>03</span><div><strong>Faça combos</strong><p>Três acertos seguidos dobram os pontos da próxima resposta. Respostas em menos de 10 segundos valem +5 pontos.</p></div></li><li><span>04</span><div><strong>Aprenda e avance</strong><p>Leia a explicação e a referência bíblica após cada resposta. Seus recordes ficam salvos neste aparelho.</p></div></li></ul>
+      <button class="button button-primary full" data-action="setup">Entendi, vamos jogar <span>→</span></button>
+    </section>
+  </main>
+  <footer>Feito para aprender e compartilhar conhecimento bíblico</footer>
+  <script src="js/perguntas.js"></script><script src="js/storage.js"></script><script src="js/audio.js"></script><script src="js/app.js"></script>
+</body>
+</html>
